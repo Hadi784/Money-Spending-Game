@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spend $100 Billion</title>
+    <style>
+        /* Global styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f7;
+            padding-bottom: 50px;
+        }
+        html {
+    scroll-padding-top: 100px;
+}
+        
+        /* Header styles */
+        header {
+            background-color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .money-remaining {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .balance {
+            font-size: 36px;
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 5px;
+        }
+        
+        .money-spent {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* Item grid layout */
+        .items-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        /* Item card styles */
+        .item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+        
+        .item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .item img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+        
+        .item-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        
+        .item-price {
+            color: #0066cc;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        /* Purchase controls */
+        .purchase-controls {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: space-between;
+        }
+        
+        .control-btn {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .minus-btn {
+            background-color: #ffb3b3;
+            color: #cc0000;
+        }
+        
+        .minus-btn:hover:not(:disabled) {
+            background-color: #ff9999;
+        }
+        
+        .plus-btn {
+            background-color: #b3d9ff;
+            color: #0066cc;
+        }
+        
+        .plus-btn:hover:not(:disabled) {
+            background-color: #99ccff;
+        }
+        
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .item-quantity {
+            font-size: 16px;
+            width: 40px;
+            text-align: center;
+        }
+        
+        /* Input for quantity */
+        input.item-quantity {
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 2px 0;
+            width: 45px;
+            text-align: center;
+        }
+        
+        input.item-quantity:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+        img[src*="no-image-icon"] {
+    filter: grayscale(1);
+    opacity: 0.6;
+}
+@media (max-width: 768px) {
+    .items-container {
+        padding: 10px;
+        gap: 15px;
+    }
+
+    .item {
+        padding: 15px;
+    }
+
+    .item img {
+        width: 90px;
+        height: 90px;
+    }
+
+    .item-price {
+        font-size: 14px;
+    }
+
+    .item-name {
+        font-size: 14px;
+    }
+
+    .control-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+
+    .item-quantity {
+        width: 35px;
+        font-size: 14px;
+    }
+
+    header {
+        padding: 15px 10px;
+    }
+
+    .balance {
+        font-size: 28px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
+
+    .money-remaining {
+        font-size: 16px;
+    }
+
+    .money-spent {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .item {
+        padding: 12px;
+    }
+
+    .item img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .control-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+
+    .item-quantity {
+        width: 30px;
+        font-size: 13px;
+    }
+
+    .balance {
+        font-size: 24px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .subtitle {
+        font-size: 13px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <div style="text-align: center; margin-bottom: 10px;">
+            <img src="elon-musk-gettyimages-2147789844-web-675b2c17301ea.avif" 
+                 alt="Elon Musk" 
+                 style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 5px;">
+            <div style="font-size: 14px; color: #333;">Spend the money of Elon Musk</div>
+        </div>
+        <h1>Spend a Thousand Trillion Dollars 💸</h1>
+        <p class="subtitle">How would you spend it?</p>
+        <p class="money-remaining">Remaining:</p>
+        <p class="balance" id="balance">$1,000,000,000,000,000</p>
+        <p class="money-spent">You've spent <span id="spent">$0</span> so far</p>
+    </header>
+    
+    
+    <main class="items-container" id="items-container">
+        <!-- Items will be generated here by JavaScript -->
+    </main>
+
+    <script>
+        // Initial balance and data
+        let balance = 1000000000000000; // $1,000 Trillion
+        let spent = 0;
+        
+        // Item data with name, price, and image URL
+        const items = [
+            {
+                id: 1,
+                name: "Big Mac",
+                price: 2,
+                image: "https://neal.fun/spend/images/big-mac.jpg",
+                quantity: 0
+            },
+            {
+                id: 2,
+                name: "Flip Flops",
+                price: 3,
+                image: "https://neal.fun/spend/images/flip-flops.jpg",
+                quantity: 0
+            },
+            {
+                id: 3,
+                name: "Coca-Cola Pack",
+                price: 5,
+                image: "https://neal.fun/spend/images/coca-cola-pack.jpg",
+                quantity: 0
+            },
+            {
+                id: 4,
+                name: "Movie Ticket",
+                price: 12,
+                image: "https://neal.fun/spend/images/movie-ticket.jpg",
+                quantity: 0
+            },
+            {
+                id: 5,
+                name: "Book",
+                price: 15,
+                image: "https://neal.fun/spend/images/book.jpg",
+                quantity: 0
+            },
+            {
+                id: 6,
+                name: "Lobster Dinner",
+                price: 45,
+                image: "https://neal.fun/spend/images/lobster-dinner.jpg",
+                quantity: 0
+            },
+            {
+                id: 7,
+                name: "Video Game",
+                price: 60,
+                image: "https://neal.fun/spend/images/video-game.jpg",
+                quantity: 0
+            },
+            {
+                id: 8,
+                name: "Amazon Echo",
+                price: 99,
+                image: "https://neal.fun/spend/images/amazon-echo.jpg",
+                quantity: 0
+            },
+            {
+                id: 9,
+                name: "Year of Netflix",
+                price: 100,
+                image: "https://neal.fun/spend/images/year-of-netflix.jpg",
+                quantity: 0
+            },
+            {
+                id: 10,
+                name: "Air Jordans",
+                price: 125,
+                image: "https://neal.fun/spend/images/air-jordans.jpg",
+                quantity: 0
+            },
+            {
+                id: 11,
+                name: "Airpods",
+                price: 199,
+                image: "https://neal.fun/spend/images/airpods.jpg",
+                quantity: 0
+            },
+            {
+                id: 12,
+                name: "Gaming Console",
+                price: 299,
+                image: "https://neal.fun/spend/images/gaming-console.jpg",
+                quantity: 0
+            },
+            {
+                id: 13,
+                name: "Drone",
+                price: 350,
+                image: "https://neal.fun/spend/images/drone.jpg",
+                quantity: 0
+            },
+            {
+                id: 14,
+                name: "Smartphone",
+                price: 699,
+                image: "https://neal.fun/spend/images/smartphone.jpg",
+                quantity: 0
+            },
+            {
+                id: 15,
+                name: "Bike",
+                price: 800,
+                image: "https://neal.fun/spend/images/bike.jpg",
+                quantity: 0
+            },
+            {
+                id: 16,
+                name: "Kitten",
+                price: 1500,
+                image: "https://neal.fun/spend/images/kitten.jpg",
+                quantity: 0
+            },
+            {
+                id: 17,
+                name: "Puppy",
+                price: 1500,
+                image: "https://neal.fun/spend/images/puppy.jpg",
+                quantity: 0
+            },
+            {
+                id: 18,
+                name: "Auto Rickshaw",
+                price: 2300,
+                image: "https://neal.fun/spend/images/auto-rickshaw.jpg",
+                quantity: 0
+            },
+            {
+                id: 19,
+                name: "Horse",
+                price: 2500,
+                image: "https://neal.fun/spend/images/horse.jpg",
+                quantity: 0
+            },
+            {
+                id: 20,
+                name: "Acre of Farmland",
+                price: 3000,
+                image: "https://neal.fun/spend/images/acre-of-farmland.jpg",
+                quantity: 0
+            },
+            {
+                id: 21,
+                name: "Designer Handbag",
+                price: 5500,
+                image: "https://neal.fun/spend/images/designer-handbag.jpg",
+                quantity: 0
+            },
+            {
+                id: 22,
+                name: "Hot Tub",
+                price: 6000,
+                image: "https://neal.fun/spend/images/hot-tub.jpg",
+                quantity: 0
+            },
+            {
+                id: 23,
+                name: "Luxury Wine",
+                price: 7000,
+                image: "https://neal.fun/spend/images/luxury-wine.jpg",
+                quantity: 0
+            },
+            {
+                id: 24,
+                name: "Diamond Ring",
+                price: 10000,
+                image: "https://neal.fun/spend/images/diamond-ring.jpg",
+                quantity: 0
+            },
+            {
+                id: 25,
+                name: "Jet Ski",
+                price: 12000,
+                image: "https://neal.fun/spend/images/jet-ski.jpg",
+                quantity: 0
+            },
+            {
+                id: 26,
+                name: "Rolex",
+                price: 15000,
+                image: "https://neal.fun/spend/images/rolex.jpg",
+                quantity: 0
+            },
+            {
+                id: 27,
+                name: "Ford F-150",
+                price: 30000,
+                image: "https://neal.fun/spend/images/ford-f-150.jpg",
+                quantity: 0
+            },
+            {
+                id: 28,
+                name: "Tesla",
+                price: 75000,
+                image: "https://neal.fun/spend/images/tesla.jpg",
+                quantity: 0
+            },
+            {
+                id: 29,
+                name: "Monster Truck",
+                price: 150000,
+                image: "https://neal.fun/spend/images/monster-truck.jpg",
+                quantity: 0
+            },
+            {
+                id: 30,
+                name: "Ferrari",
+                price: 250000,
+                image: "https://neal.fun/spend/images/ferrari.jpg",
+                quantity: 0
+            },
+            {
+                id: 31,
+                name: "Single Family Home",
+                price: 300000,
+                image: "https://neal.fun/spend/images/single-family-home.jpg",
+                quantity: 0
+            },
+            {
+                id: 32,
+                name: "Gold Bar",
+                price: 700000,
+                image: "https://neal.fun/spend/images/gold-bar.jpg",
+                quantity: 0
+            },
+            // Adding more expensive items
+            {
+                id: 33,
+                name: "McDonalds Franchise",
+                price: 1500000,
+                image: "https://neal.fun/spend/images/mcdonalds-franchise.jpg",
+                quantity: 0
+            },
+            {
+                id: 34,
+                name: "Superbowl Ad",
+                price: 5250000,
+                image: "https://neal.fun/spend/images/superbowl-ad.jpg",
+                quantity: 0
+            },
+            {
+                id: 35,
+                name: "Yacht",
+                price: 7500000,
+                image: "https://neal.fun/spend/images/yacht.jpg",
+                quantity: 0
+            },
+            {
+                id: 36,
+                name: "M1 Abrams Tank",
+                price: 8000000,
+                image: "https://neal.fun/spend/images/m1-abrams.jpg",
+                quantity: 0
+            },
+            {
+                id: 37,
+                name: "Formula 1 Car",
+                price: 15000000,
+                image: "https://neal.fun/spend/images/formula-1-car.jpg",
+                quantity: 0
+            },
+            {
+                id: 38,
+                name: "Apache Helicopter",
+                price: 31000000,
+                image: "https://neal.fun/spend/images/apache-helicopter.jpg",
+                quantity: 0
+            },
+            {
+                id: 39,
+                name: "Mansion",
+                price: 45000000,
+                image: "https://neal.fun/spend/images/mansion.jpg",
+                quantity: 0
+            },
+            {
+                id: 40,
+                name: "Make a Movie",
+                price: 100000000,
+                image: "https://neal.fun/spend/images/make-a-movie.jpg",
+                quantity: 0
+            },
+            {
+                id: 41,
+                name: "Boeing 747",
+                price: 148000000,
+                image: "https://neal.fun/spend/images/boeing-747.jpg",
+                quantity: 0
+            },
+            {
+                id: 42,
+                name: "Mona Lisa",
+                price: 780000000,
+                image: "https://neal.fun/spend/images/mona-lisa.jpg",
+                quantity: 0
+            },
+            {
+                id: 43,
+                name: "Skyscraper",
+                price: 850000000,
+                image: "https://neal.fun/spend/images/skyscraper.jpg",
+                quantity: 0
+            },
+            {
+                id: 44,
+                name: "Cruise Ship",
+                price: 930000000,
+                image: "https://neal.fun/spend/images/cruise-ship.jpg",
+                quantity: 0
+            },
+            {
+                id: 45,
+                name: "NBA Team",
+                price: 2120000000,
+                image: "https://neal.fun/spend/images/nba-team.jpg",
+                quantity: 0
+            },
+            // Adding even more ultra-expensive items with reliable images
+            {
+                id: 46,
+                name: "NFL Team",
+                price: 3000000000, // $3 billion
+                image: "https://assets.turbologo.com/blog/en/2020/01/19084653/NFL-logo-illustration.png",
+                quantity: 0
+            },
+            {
+                id: 47,
+                name: "Space X Falcon Heavy Launch",
+                price: 90000000, // $90 million
+                image: "https://www.universetoday.com/wp-content/uploads/2018/02/falcon_heavy_demo_mission_40126461851.jpg",
+                quantity: 0
+            },
+            {
+                id: 48,
+                name: "Private Island",
+                price: 80000000, // $80 million
+                image: "https://media.cntraveler.com/photos/610803a7515cb1f182e29ca9/4:3/w_3000,h_2250,c_limit/Private%20Islands%20For%20Sale_Vatuvara%20Private%20Islands.jpg",
+                quantity: 0
+            },
+            {
+                id: 49,
+                name: "Bugatti La Voiture Noire",
+                price: 18900000, // $18.9 million
+                image: "https://hips.hearstapps.com/hmg-prod/images/bugatti-la-voiture-noire-2-64ed8daa38214.jpg",
+                quantity: 0
+            },
+            {
+                id: 50,
+                name: "Luxury Hotel",
+                price: 500000000, // $500 million
+                image: "https://cdn.cnn.com/cnnnext/dam/assets/180418150043-burj-al-arab.jpg",
+                quantity: 0
+            },
+            {
+                id: 51,
+                name: "Research University",
+                price: 3500000000, // $3.5 billion
+                image: "https://www.timeshighereducation.com/sites/default/files/styles/the_breaking_news_image_style/public/harvard_university_building.jpg",
+                quantity: 0
+            },
+            {
+                id: 52,
+                name: "Hospital",
+                price: 800000000, // $800 million
+                image: "https://www.beckershospitalreview.com/images/2022/06/28/Mayo%20Clinic-Florida.jpg",
+                quantity: 0
+            },
+            {
+                id: 53,
+                name: "Airport",
+                price: 4000000000, // $4 billion
+                image: "https://staticinm-1.cdninstagram.com/p/fd/581/188/52/581188522_1069693824_n.jpg",
+                quantity: 0
+            },
+            {
+                id: 54,
+                name: "Space Station Module",
+                price: 150000000, // $150 million
+                image: "https://www.nasa.gov/wp-content/uploads/2023/03/iss069e028885.jpg",
+                quantity: 0
+            },
+            {
+                id: 55,
+                name: "Luxury Submarine",
+                price: 90000000, // $90 million
+                image: "https://cdn.motor1.com/images/mgl/qZ6bw/s1/u-boat-worx-unveils-luxury-submarine-that-can-dive-to-6-600-feet.jpg",
+                quantity: 0
+            },
+            {
+                id: 56,
+                name: "Nuclear Power Plant",
+                price: 6000000000, // $6 billion
+                image: "https://ichef.bbci.co.uk/news/976/cpsprodpb/172CA/production/_123882034_gettyimages-471243110.jpg",
+                quantity: 0
+            },
+            {
+                id: 57,
+                name: "Desalination Plant",
+                price: 1500000000, // $1.5 billion
+                image: "https://assets.weforum.org/article/image/K_GYPVkj-teuWvRv5_JYgFemF_0eFGLM8nP3v-SXwaA.jpg",
+                quantity: 0
+            },
+            {
+                id: 58,
+                name: "Super Yacht",
+                price: 500000000, // $500 million
+                image: "https://robbreport.com/wp-content/uploads/2022/03/SYT_11-1.jpg",
+                quantity: 0
+            },
+            {
+                id: 59,
+                name: "Mars Mission",
+                price: 10000000000, // $10 billion
+                image: "https://www.universetoday.com/wp-content/uploads/2019/12/ELSg8wKWsAAVTod.jpg",
+                quantity: 0
+            },
+            {
+                id: 60,
+                name: "Cure Disease Research",
+                price: 5000000000, // $5 billion
+                image: "https://healthpolicy.usc.edu/wp-content/uploads/2022/06/iStock-1290144293-scaled-e1654550906695.jpg",
+                quantity: 0
+            },
+            {
+                id: 61,
+                name: "Social Media Platform",
+                price: 20000000000, // $20 billion
+                image: "https://images.ctfassets.net/4cd45et68cgf/28h5XGn7G7xAbyhsjdCnQY/b810a552aae8e27e864ea887409efbe8/socialmediaplatform.jpg",
+                quantity: 0
+            },
+            {
+                id: 62,
+                name: "Commercial Airline",
+                price: 10000000000, // $10 billion
+                image: "https://www.wns.com/Portals/0/Images/HeaderBanner/commercial-airlines.jpg",
+                quantity: 0
+            },
+            {
+                id: 63,
+                name: "Hollywood Studio",
+                price: 15000000000, // $15 billion
+                image: "https://nypost.com/wp-content/uploads/sites/2/2023/05/disney-5.jpg",
+                quantity: 0
+            },
+            {
+                id: 64,
+                name: "End World Hunger (1 Year)",
+                price: 30000000000, // $30 billion
+                image: "https://images.immediate.co.uk/production/volatile/sites/4/2018/10/GettyImages-1049999528-26fa202.jpg",
+                quantity: 0
+            },
+            {
+                id: 65,
+                name: "Moon Base",
+                price: 35000000000, // $35 billion
+                image: "https://static.euronews.com/articles/stories/06/99/37/54/1440x810_cmsv2_2dd66c1f-2f1e-5e80-9e81-46c09cc1cbe1-6993754.jpg",
+                quantity: 0
+            }
+        ];
+        
+        // Format currency function
+        function formatCurrency(amount) {
+            return '$' + amount.toLocaleString('en-US');
+        }
+        
+        // Update balance and buttons
+        function updateBalance() {
+            document.getElementById('balance').textContent = formatCurrency(balance);
+            document.getElementById('spent').textContent = formatCurrency(spent);
+            
+            // Check which items the user can afford
+            items.forEach(item => {
+                const plusBtn = document.getElementById(`plus-${item.id}`);
+                const minusBtn = document.getElementById(`minus-${item.id}`);
+                
+                // Disable plus button if user can't afford the item
+                if (item.price > balance) {
+                    plusBtn.disabled = true;
+                } else {
+                    plusBtn.disabled = false;
+                }
+                
+                // Disable minus button if quantity is 0
+                if (item.quantity === 0) {
+                    minusBtn.disabled = true;
+                } else {
+                    minusBtn.disabled = false;
+                }
+            });
+        }
+        
+        // Add to cart function
+        function addItem(id) {
+            const item = items.find(item => item.id === id);
+            
+            if (balance >= item.price) {
+                item.quantity++;
+                balance -= item.price;
+                spent += item.price;
+                document.getElementById(`quantity-${id}`).value = item.quantity;
+                updateBalance();
+            }
+        }
+        
+        // Remove from cart function
+        function removeItem(id) {
+            const item = items.find(item => item.id === id);
+            
+            if (item.quantity > 0) {
+                item.quantity--;
+                balance += item.price;
+                spent -= item.price;
+                document.getElementById(`quantity-${id}`).value = item.quantity;
+                updateBalance();
+            }
+        }
+        
+        // Update quantity from input
+        function updateQuantity(id, newValue) {
+            const item = items.find(item => item.id === id);
+            newValue = parseInt(newValue) || 0;
+            
+            // Ensure quantity is non-negative
+            if (newValue < 0) {
+                newValue = 0;
+                document.getElementById(`quantity-${id}`).value = 0;
+            }
+            
+            // Check if user can afford additional items
+            const additionalItems = newValue - item.quantity;
+            const additionalCost = additionalItems * item.price;
+            
+            if (additionalItems > 0 && additionalCost > balance) {
+                // User can't afford to add this many items
+                const maxAdditional = Math.floor(balance / item.price);
+                newValue = item.quantity + maxAdditional;
+                document.getElementById(`quantity-${id}`).value = newValue;
+            }
+            
+            // Update balance
+            const costDifference = (newValue - item.quantity) * item.price;
+            balance -= costDifference;
+            spent += costDifference;
+            
+            // Update item quantity
+            item.quantity = newValue;
+            
+            // Update UI
+            updateBalance();
+        }
+        
+        // Generate item cards
+        function generateItems() {
+            const container = document.getElementById('items-container');
+            
+            items.forEach(item => {
+                const itemCard = document.createElement('div');
+                itemCard.className = 'item';
+                
+                itemCard.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null; this.src='https://www.freeiconspng.com/uploads/no-image-icon-6.png'">
+                    <h3 class="item-name">${item.name}</h3>
+                    <p class="item-price">${formatCurrency(item.price)}</p>
+                    <div class="purchase-controls">
+                        <button class="control-btn minus-btn" id="minus-${item.id}" disabled onclick="removeItem(${item.id})">-</button>
+                        <input type="number" min="0" class="item-quantity" id="quantity-${item.id}" value="${item.quantity}" oninput="updateQuantity(${item.id}, this.value)">
+                        <button class="control-btn plus-btn" id="plus-${item.id}" onclick="addItem(${item.id})">+</button>
+                    </div>
+                `;
+                
+                container.appendChild(itemCard);
+            });
+        }
+        
+        // Initialize the page
+        generateItems();
+        updateBalance();
+    </script>
+</body>
+</html>
